@@ -1,0 +1,55 @@
+<h1>Source Config</h1>
+<p class="lead">View and edit the source configs that you want to compute in your datasets.
+<p>Source Configs specifies data source backends, knowledge source backends and algorithm backends.
+<div class="alert alert-danger" role="alert" ng-if="sourceconfig.deleteErrorMsg">
+	<strong>Error deleting source configs!</strong> {{sourceconfig.deleteErrorMsg}}
+</div>
+<div class="alert alert-danger" role="alert" ng-if="sourceconfig.loadErrorMsg">
+	<strong>Error loading source configs!</strong> {{sourceconfig.loadErrorMsg}}
+</div>
+
+<div>
+	<a ui-sref="newSourceconfig" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span>
+		Create New Source Config
+	</a>
+</div>
+
+<!-- ng-table -->
+<table ng-table="sourceconfig.tableParams" class="table" show-filter="true">
+	<tr ng-repeat="sourceconfigItem in sourceconfig.sourceConfigs">
+		<td style="width: 4em;">
+			<a title="Edit" ui-sref="editSourceconfig({key: sourceconfigItem.id})">
+				<span class="glyphicon glyphicon-pencil edit-icon" title="Edit"></span>
+			</a>
+			<span class="glyphicon glyphicon-remove delete-icon" ng-click="sourceconfig.deleteSourceconfig(sourceconfigItem)" title="Delete"></span>
+		</td>
+		<td title="'ID'" filter="{ displayName: 'text'}" sortable="'displayName'">
+			{{sourceconfigItem.id}}
+		</td>
+		<td title="'Data Source Backend'" filter="{ description: 'text'}" sortable="'description'">
+			{{sourceconfigItem.dataSourceBackends[0].id}}
+		</td>
+		<td title="'Knowledge Source Backend'" filter="{ type: 'text'}" sortable="'type'">
+			{{sourceconfigItem.knowledgeSourceBackends[0].id}}
+		</td>
+		<td title="'Algorithm Backend'" filter="{ created: 'text'}" sortable="'created'">
+			{{sourceconfigItem.algorithmSourceBackends[0].id}}
+		</td>
+	</tr>
+</table>
+
+<script type="text/ng-template" id="myModal.html">
+    <div class="modal-header">
+		<h3 class="modal-title">Delete Source Config</h3>
+    </div>
+    <div class="modal-body">
+		<p><strong>Are you sure you want to delete "{{mo.displayName}}"?</strong></p>
+		<p>This operation cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+		<button class="btn" ng-click="mo.cancel()">Cancel</button>
+		<button class="btn btn-primary" ng-click="mo.ok()">Delete</button>
+    </div>
+</script>
+
+

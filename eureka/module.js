@@ -41,6 +41,7 @@
         'eureka.phenotypes',
         'eureka.help',
         'eureka.jobs',
+        'eureka.sourceconfig',
 	'eureka.index',
 	'eureka.logout',
         'flow']);
