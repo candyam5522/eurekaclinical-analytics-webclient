@@ -29,7 +29,7 @@
                 controllerAs: 'editSourceconfig'
             })
             .state('editSourceconfig', {
-                url: '/sourceconfig/:key',
+                url: '/sourceconfig/edit/:key',
                 templateUrl: 'eureka/sourceconfig/views/edit/edit.html',
                 controller: 'sourceconfig.EditCtrl',
                 controllerAs: 'editSourceconfig'

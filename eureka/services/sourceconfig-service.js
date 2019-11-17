@@ -20,6 +20,7 @@
 	
 	return ({
 	    getSourceConfigs: getSourceConfigs,
+            getSourceConfig: getSourceConfig,
 	    getJobModes: getJobModes,
 	});
 
@@ -28,6 +29,13 @@
 	function getSourceConfigs() {
 	    return ProxyService.getDataEndpoint().then(function(url) {
 		return $http.get(url + '/sourceconfigs')
+		    .then(handleSuccess, handleError);
+	    }, handleError);
+	}
+        
+        function getSourceConfig(config) {
+	    return ProxyService.getDataEndpoint().then(function(url) {
+		return $http.get(url + '/sourceconfigs/' + config)
 		    .then(handleSuccess, handleError);
 	    }, handleError);
 	}

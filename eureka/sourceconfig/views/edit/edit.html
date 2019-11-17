@@ -7,23 +7,123 @@
 <div id="definitionContainer">
 	<form novalidate angular-validator angular-validator-submit="editSourceconfig.submitCohortForm()" name="sourceconfigForm" id="sourceconfigForm" class="vert-offset" role="form">
 		<div class="form-group">
-			<label for="sourceconfigDefname" class="control-label">Name</label>
-			<input type="text" id="sourceconfigDefName" name="sourceconfigDefName" class="form-control" ng-model="editCohort.name" required-message="'Name is required'" required />
-		</div>
-		<div class="form-group">
-			<label for="sourceconfigDatasource" class="control-label">Data Source Backend</label>
-			<input type="text" id="sourceconfigDatasource" class="form-control" ng-model="editSourceconfig.datasourceBackends"></input>
-		</div>
-                
-                <div class="form-group">
-			<label for="sourceconfigKnowledgesource" class="control-label">Knowledge Source Backend</label>
-			<textarea id="sourceconfigKnowledgesource" class="form-control" ng-model="editSourceconfig.knowledgesourceBackends"></textarea>
+			<label for="sourceconfigDefname" class="control-label">Name:</label>
+                        
+			<input ng-if="editSourceconfig.nowEditing === undefined" type="text" id="sourceconfigDefName" name="sourceconfigDefName" class="form-control" ng-model="editSourceconfig.id" required-message="'Name is required'" required />
+                        <label ng-if="editSourceconfig.nowEditing !== undefined">{{editSourceconfig.id}}</label>
+
 		</div>
             
-                <div class="form-group">
-			<label for="Algorithm" class="control-label">Algorithm Backend</label>
-			<textarea id="Algorithm" class="form-control" ng-model="editSourceconfig.AlgorithmBackends"></textarea>
-		</div>
+		<div class="form-group">
+			<label  class="control-label">Data Source Backends</label>
+                <table class="table">
+                    <tbody>
+                        <tr ng-repeat-start="backend in editSourceconfig.dataSourceBackends">
+                            <td></td>
+                            <td><input type="text" class="form-control" ng-model="backend.id"/></td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td><button ng-click="expanded = !expanded" expand>
+                        <span ng-bind="expanded ? '-' : '+'"></span>
+                    </button></td>
+                            <td>
+                                <table class="table table-condensed table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Option Name</th>
+                                        <th>Option Value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody  ng-show="expanded">
+                                        <tr ng-repeat = "option in backend.options" >
+                                            <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.name"/></td>
+                                            <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.value"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+<!--                <div class="form-group" ng-repeat=" datasourceBackend in editSourceconfig.dataSourceBackends">
+                        <input type="text" id="sourceconfigDatasource" class="form-control" ng-model="datasourceBackend.id"/>
+                        -->
+                        
+                </div>
+                
+ <div class="form-group">
+			<label  class="control-label">Knowledge Source Backend</label>
+                <table class="table">
+                    <tbody>
+                        <tr ng-repeat-start="backend in editSourceconfig.knowledgeSourceBackends">
+                            <td></td>
+                            <td><input type="text" class="form-control" ng-model="backend.id"/></td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td><button ng-click="expanded = !expanded" expand>
+                        <span ng-bind="expanded ? '-' : '+'"></span>
+                    </button></td>
+                            <td>
+                                <table class="table table-condensed table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Option Name</th>
+                                        <th>Option Value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody  ng-show="expanded">
+                                        <tr ng-repeat = "option in backend.options" >
+                                            <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.name"/></td>
+                                            <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.value"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+<!--                <div class="form-group" ng-repeat=" datasourceBackend in editSourceconfig.dataSourceBackends">
+                        <input type="text" id="sourceconfigDatasource" class="form-control" ng-model="datasourceBackend.id"/>
+                        -->
+                        
+                </div>
+            
+            <div class="form-group">
+			<label  class="control-label">Algorithm Backend</label>
+                <table class="table">
+                    <tbody>
+                        <tr ng-repeat-start="backend in editSourceconfig.algorithmSourceBackends">
+                            <td></td>
+                            <td><input type="text" class="form-control" ng-model="backend.id"/></td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td><button ng-click="expanded = !expanded" expand>
+                        <span ng-bind="expanded ? '-' : '+'"></span>
+                    </button></td>
+                            <td>
+                                <table class="table table-condensed table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Option Name</th>
+                                        <th>Option Value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody  ng-show="expanded">
+                                        <tr ng-repeat = "option in backend.options" >
+                                            <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.name"/></td>
+                                            <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.value"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+<!--                <div class="form-group" ng-repeat=" datasourceBackend in editSourceconfig.dataSourceBackends">
+                        <input type="text" id="sourceconfigDatasource" class="form-control" ng-model="datasourceBackend.id"/>
+                        -->
+                        
+                </div>
             
 		<button id="patCohortEditCancelButton" type="button" class="btn" ng-click="editSourceconfig.cancelSourceconfigForm()">Cancel</button>
 		<button id="patCohortEditSaveButton" type="submit" class="btn btn-primary">Save</button>

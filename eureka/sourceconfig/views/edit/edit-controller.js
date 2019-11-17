@@ -23,14 +23,17 @@
         vm.nowEditing = $stateParams.key;
 		vm.treeMultiDropZoneItems = [];
 		vm.treeMultiDropZoneInitialKeys = [];
-
+        console.log("source config " + $stateParams.key);
+        console.log($stateParams);
         if (vm.nowEditing) {
-            SourceconfigService.getCohort(vm.nowEditing).then(function(data) {
-                vm.name = data.name;
-                vm.description = data.description;
+            SourceconfigService.getSourceConfig(vm.nowEditing).then(function(data) {
                 vm.id = data.id;
-                traverseNodes(data.cohort.node);
-            }, displayError);
+                vm.name = data.displayname;
+                vm.description = data.description;
+                vm.dataSourceBackends = data.dataSourceBackends;
+                vm.knowledgeSourceBackends = data.knowledgeSourceBackends;
+                vm.algorithmSourceBackends = data.algorithmSourceBackends;
+                }, displayError);
         }
 
         let onRouteChangeOff = $scope.$on('$stateChangeStart', routeChange);
