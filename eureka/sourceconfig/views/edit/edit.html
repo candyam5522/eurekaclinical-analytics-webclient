@@ -5,7 +5,7 @@
 	<strong>Error saving cohort!</strong> {{editSourceconfig.errorMsg}}
 </div>
 <div id="definitionContainer">
-	<form novalidate angular-validator angular-validator-submit="editSourceconfig.submitCohortForm()" name="sourceconfigForm" id="sourceconfigForm" class="vert-offset" role="form">
+	<form novalidate angular-validator angular-validator-submit="editSourceconfig.save()" name="sourceconfigForm" id="sourceconfigForm" class="vert-offset" role="form" ng-init="expanded=true;">
 		<div class="form-group">
 			<label for="sourceconfigDefname" class="control-label">Name:</label>
                         
@@ -22,8 +22,8 @@
                             <td></td>
                             <td><input type="text" class="form-control" ng-model="backend.id"/></td>
                         </tr>
-                        <tr ng-repeat-end>
-                            <td><button ng-click="expanded = !expanded" expand>
+                        <tr ng-repeat-end ng-show="editSourceconfig.nowEditing !== undefined">
+                            <td><button ng-click="expanded = !expanded; $event.preventDefault();" expand>
                         <span ng-bind="expanded ? '-' : '+'"></span>
                     </button></td>
                             <td>
@@ -34,7 +34,7 @@
                                         <th>Option Value</th>
                                     </tr>
                                     </thead>
-                                    <tbody  ng-show="expanded">
+                                    <tbody ng-show="expanded">
                                         <tr ng-repeat = "option in backend.options" >
                                             <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.name"/></td>
                                             <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.value"/></td>
@@ -59,8 +59,8 @@
                             <td></td>
                             <td><input type="text" class="form-control" ng-model="backend.id"/></td>
                         </tr>
-                        <tr ng-repeat-end>
-                            <td><button ng-click="expanded = !expanded" expand>
+                        <tr ng-repeat-end ng-show="editSourceconfig.nowEditing !== undefined">
+                            <td><button ng-click="expanded = !expanded; $event.preventDefault();" expand>
                         <span ng-bind="expanded ? '-' : '+'"></span>
                     </button></td>
                             <td>
@@ -71,7 +71,7 @@
                                         <th>Option Value</th>
                                     </tr>
                                     </thead>
-                                    <tbody  ng-show="expanded">
+                                    <tbody ng-show="expanded">
                                         <tr ng-repeat = "option in backend.options" >
                                             <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.name"/></td>
                                             <td><input type="text" style="width: 100%; border: 0; box-sizing: border-box;" ng-model="option.value"/></td>
@@ -96,8 +96,8 @@
                             <td></td>
                             <td><input type="text" class="form-control" ng-model="backend.id"/></td>
                         </tr>
-                        <tr ng-repeat-end>
-                            <td><button ng-click="expanded = !expanded" expand>
+                        <tr ng-repeat-end ng-show="editSourceconfig.nowEditing !== undefined">
+                            <td><button ng-click="expanded = !expanded; $event.preventDefault();" expand>
                         <span ng-bind="expanded ? '-' : '+'"></span>
                     </button></td>
                             <td>
@@ -126,7 +126,10 @@
                 </div>
             
 		<button id="patCohortEditCancelButton" type="button" class="btn" ng-click="editSourceconfig.cancelSourceconfigForm()">Cancel</button>
-		<button id="patCohortEditSaveButton" type="submit" class="btn btn-primary">Save</button>
+		
+                <button ng-if="editSourceconfig.nowEditing !== undefined" id="patCohortEditSaveButton" type="submit" class="btn btn-primary">Save</button>
+                <button ng-if="editSourceconfig.nowEditing === undefined" id="patCohortEditSaveButton" type="submit" class="btn btn-primary">Create And Edit</button>
+
 	</form>
 </div>
 <script type="text/ng-template" id="treeMultiDropZoneDeleteModal.html">

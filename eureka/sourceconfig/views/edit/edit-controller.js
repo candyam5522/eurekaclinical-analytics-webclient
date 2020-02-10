@@ -17,6 +17,7 @@
     EditCtrl.$inject = ['SourceconfigService', '$stateParams', '$state', '$scope', '$uibModal'];
     CancelCreateModalCtrl.$inject = ['$uibModalInstance'];
     CancelEditModalCtrl.$inject = ['$uibModalInstance', 'cohortName'];
+    
 
     function EditCtrl(SourceconfigService, $stateParams, $state, $scope, $uibModal) {
         let vm = this;
@@ -25,6 +26,13 @@
 		vm.treeMultiDropZoneInitialKeys = [];
         console.log("source config " + $stateParams.key);
         console.log($stateParams);
+        vm.id = "";
+        vm.displayname = "";
+        vm.description = "";
+        vm.dataSourceBackends = [{id:"",options:[]}];
+        vm.knowledgeSourceBackends = [{id:"",options:[]}];
+        vm.algorithmSourceBackends = [{id:"",options:[]}];
+        
         if (vm.nowEditing) {
             SourceconfigService.getSourceConfig(vm.nowEditing).then(function(data) {
                 vm.id = data.id;
@@ -37,26 +45,61 @@
         }
 
         let onRouteChangeOff = $scope.$on('$stateChangeStart', routeChange);
+        
+        vm.save = function () {
+			let sourceconfig = {};
+                        sourceconfig.id = vm.id;
+                        sourceconfig.displayName = vm.displayname;
+                        sourceconfig.dataSourceBackends = vm.dataSourceBackends;
+                        sourceconfig.knowledgeSourceBackends = vm.knowledgeSourceBackends;
+                        sourceconfig.algorithmSourceBackends = vm.algorithmSourceBackends;
+                        
+//                        sourceconfig.dataSourceBackends = [...vm.dataSourceBackends];
+//                        sourceconfig.knowledgeSourceBackends = [...vm.knowledgeSourceBackends];
+//                        sourceconfig.algorithmSourceBackends = [...vm.algorithmSourceBackends];
+                        
+//                        sourceconfig.dataSourceBackends[0].options = [];
+//                        sourceconfig.knowledgeSourceBackends[0].options = [];
+//                        sourceconfig.algorithmSourceBackends[0].options = [];
+//                        
+//                        console.log(vm.dataSourceBackends);
+//                        
+//                        for(let elem in vm.dataSourceBackends[0].options){
+//                            if(elem.name !== ""){
+//                                sourceconfig.dataSourceBackends[0].options.push(elem);
+//                            }
+//                         }
+//                         
+//                        for(let elem in vm.knowledgeSourceBackends[0].options){
+//                            if(elem.name !== ""){
+//                                sourceconfig.knowledgeSourceBackends[0].options.push(elem);
+//                            }
+//                        }
+//                        
+//                        for(let elem in vm.algorithmSourceBackends[0].options){
+//                            if(elem.name !== ""){
+//                                sourceconfig.algorithmSourceBackends[0].options.push(elem);
+//                            }
+//                        }
+//                         
+                         
+			
+				if (vm.nowEditing !== undefined) {
+		
+					SourceconfigService.updateSourceConfig(sourceconfig).then(function () {
+						onRouteChangeOff();
+						$state.transitionTo('sourceconfig');
+					}, displayError);
+				} else {
+					
+					SourceconfigService.createSourceConfig(sourceconfig).then(function () {
+						onRouteChangeOff();
+						$state.transitionTo('editSourceconfig',{key:sourceconfig.id});
+					}, displayError);
+				}
+			
 
-        vm.submitCohortForm = function () {
-            let cohortObject = {};
-            cohortObject.name = vm.name;
-            cohortObject.description = vm.description;
-            cohortObject.memberList = vm.treeMultiDropZoneItems;
-			if (vm.nowEditing) {
-                cohortObject.id = vm.id;
-                CohortService.updateCohort(cohortObject).then(function() {
-                    onRouteChangeOff();
-					$state.transitionTo('sourceconfig');
-				}, displayError);
-            } else {
-				CohortService.createCohort(cohortObject).then(function() {
-                    onRouteChangeOff();
-					$state.transitionTo('sourceconfig');
-				}, displayError);
-            }
-
-        };
+		};
 
         vm.cancelSourceconfigForm = function() {
             $state.transitionTo('sourceconfig');

@@ -21,6 +21,8 @@
 	return ({
 	    getSourceConfigs: getSourceConfigs,
             getSourceConfig: getSourceConfig,
+            createSourceConfig: createSourceConfig,
+            updateSourceConfig: updateSourceConfig,
 	    getJobModes: getJobModes,
 	});
 
@@ -36,6 +38,20 @@
         function getSourceConfig(config) {
 	    return ProxyService.getDataEndpoint().then(function(url) {
 		return $http.get(url + '/sourceconfigs/' + config)
+		    .then(handleSuccess, handleError);
+	    }, handleError);
+	}
+        
+        function createSourceConfig(newObject) {
+	    return ProxyService.getDataEndpoint().then(function(url) {
+		return $http.post(url + '/sourceconfigs', newObject)
+		    .then(handleSuccess, handleError);
+	    }, handleError);
+	}
+
+	function updateSourceConfig(updateObject) {
+	    return ProxyService.getDataEndpoint().then(function(url) {
+		return $http.put(url + '/sourceconfigs/' + updateObject.id, updateObject)
 		    .then(handleSuccess, handleError);
 	    }, handleError);
 	}
